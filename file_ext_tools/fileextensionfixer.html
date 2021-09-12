@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="fileextensionfixer.css" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<div class="container">
+		<div id="main" class="input-group-container">
+			<div class="strap">
+				<h1>File Extension Fixer</h1>
+			</div>
+			<small>Converts uppercase file extensions to lowercase. <br />All processing is done using client-side javascript.</small>
+			<hr class="break"/>
+			<label id="fileinputlabel" for="fileinput" class="file-input button">Choose files...</label>
+			<p id="fileinputdesc">No files selected.</p>
+			<noscript>This tool requires javascript to be enabled to function. It will not work without it.</noscript>
+			<input type="file" id="fileinput" class="file-input" name="fileinput[]" multiple="multiple" />
+			<input type="submit" id="filesubmit" value="Submit" class="button" />
+			<hr />
+			<p>&copy; Copyright Jerzy Foss 2017. All Rights Reserved.</p>
+			<p><small>Warning! Use this at your own risk. <br/>Uploading too many files, or very large files to this tool may crash your browser. <br/>Ensure you have copies of any files you run through this tool in case it messes anything up. <br/>I'm not liable for any damages.</small></p>
+		</div>		
+		<div id="fileoutput"></div>
+	</div>	
+	<script>
+		function processInput(){
+			var fileInput = document.getElementById('fileinput');
+			var files = fileInput.files;
+			var fileOutput = document.getElementById('fileoutput');
+			while (fileOutput.hasChildNodes() && files.length > 0){
+				if((' ' + fileOutput.lastChild.className + ' ').indexOf(' container-download ') > -1){
+					var downloads = fileOutput.lastChild.getElementsByClassName("download");
+					for(var c = 0; c < downloads.length; c++){
+						URL.revokeObjectURL(downloads[c].href);
+					}
+				}
+				
+				fileOutput.removeChild(fileOutput.lastChild);
+			}				
+			var totalSize = 0;
+			for(var i = 0; i < files.length; i++){
+				var file = files[i];
+				var downloadContainer = document.createElement('div');
+				downloadContainer.className = "container-download";
+				var download;
+				if((totalSize + file.size) < 400000000){
+					totalSize += file.size;
+					download = document.createElement('a');
+					download.className = "download";
+					var filenameParts = file.name.split('.');
+					var filenameName = filenameParts[0];
+					var filenameExtension = '';
+					if(filenameParts.length > 1){
+						for(var j = 1; j < filenameParts.length; j++){
+							filenameExtension += '.';
+							filenameExtension += filenameParts[j];
+						}
+					}
+					filenameExtension = filenameExtension.toLowerCase();
+					download.href = URL.createObjectURL(file);
+					download.download = filenameName + filenameExtension;
+					download.innerHTML = file.name + ' (' + filenameName + filenameExtension + ')';
+					if((filenameName + filenameExtension) !== file.name){
+						downloadContainer.className += " success";
+					}
+					else{
+						downloadContainer.className += " warning unchanged";
+					}
+					downloadContainer.appendChild(download);
+				}
+				else{
+					download = document.createElement('span');
+					download.innerHTML = file.name;
+					downloadContainer.className += " error toolarge";
+					downloadContainer.appendChild(download);
+				}
+				document.getElementById('fileoutput').appendChild(downloadContainer);				
+			}
+			fileInput.value = '';
+			
+		}
+		
+		function fileSelect(){
+			var fi = document.getElementById('fileinput');
+			var fs = fi.files;
+			var fid = document.getElementById('fileinputdesc');
+			if(fs.length < 1){
+				fid.innerHTML = "No files selected.";
+			}
+			else if(fs.length == 1) {
+				fid.innerHTML = fs[0].name + " selected.";
+			}
+			else{
+				fid.innerHTML = fs.length + " files selected.";
+			}
+		}
+		
+		function ensureBrowserSupport(){
+			if (!window.File || !window.FileList || !window.Blob) {
+				var parent = document.getElementById('main');
+				parent.removeChild(document.getElementById('fileinputlabel'));
+				parent.removeChild(document.getElementById('fileinput'));
+				parent.removeChild(document.getElementById('filesubmit'));
+				document.getElementById('fileinputdesc').innerHTML = "Sorry, this tool does not support your browser.";
+			}
+		}
+				
+		document.getElementById('filesubmit').addEventListener('click', processInput, false);
+		document.getElementById('fileinput').addEventListener('change', fileSelect, false);
+		window.addEventListener('load', ensureBrowserSupport, false);
+	</script>
+</body>
+</html>

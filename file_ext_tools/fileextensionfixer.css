@@ -1,0 +1,141 @@
+html, body {
+	display:block;
+	width:100%;
+	margin:0px;
+	padding:0px;
+	font-family:Tahoma, Geneva, sans-serif
+}
+
+input {
+	display: block;
+
+}
+
+.container {
+	margin:auto;
+}
+
+div.input-group-container {
+	max-width:100%;
+	width:500px;
+	margin:100px auto;
+	text-align:center;
+	border:2px solid #D3D3D3;
+	box-shadow: 1px;
+}
+
+.strap {
+	background-color:#3D72C6;
+	height:60px;
+	padding-top:15px;
+}
+
+.strap h1{
+	color:white;
+	margin:0px;
+}
+
+hr.break {
+	margin-bottom:25px;
+}
+
+input {
+	margin:20px auto;
+}
+
+input[type="file"].file-input {
+	width:0.1px;
+	height:0.1px;
+	opacity:0;
+	overflow:hidden;
+	position:absolute;
+	z-index:-1;
+}
+
+a {
+	text-decoration:none;
+	font-family:Tahoma, Geneva, sans-serif;
+	color:#284E8A;
+}
+
+a:hover{
+	color:#6600CC;
+}
+
+.button {
+	background-color:#3D72C6;
+	color:white;
+	padding:10px;
+	cursor:pointer;
+	border:0 none;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:1.1em;
+}
+
+.button:hover {
+	background-color:#4D7ECB;
+}
+
+#filesubmit {
+	margin-top:50px;
+}
+
+#fileoutput {
+	width:95%;
+	margin:auto;
+}	
+
+.container-download {
+	margin:25px auto;
+	padding:25px;
+	border:1px solid #D3D3D3;
+}
+
+.container-download.success {
+	border-left:5px solid green;
+	border-right:5px solid green;
+}
+
+.container-download.success:before {
+	content:"Download: ";
+}
+
+.container-download.success:after {
+	color:green;
+	float:right;
+	content:"Success";
+}
+
+.container-download.warning {
+	border-left:5px solid orange;
+	border-right:5px solid orange;
+}
+
+.container-download.warning:before {
+	content:"Download: ";
+}
+
+.container-download.warning:after {
+	color:orange;
+	float:right;
+	content:"Warning";
+}
+
+.container-download.warning.unchanged:after {
+	content:"File Unchanged";
+}
+
+.container-download.error {
+	border-left:5px solid red;
+	border-right:5px solid red;
+}
+
+.container-download.error:after {
+	color:red;
+	float:right;
+	content:"Failure";
+}
+
+.container-download.error.toolarge:after {
+	content:"Total file size too large";
+}
